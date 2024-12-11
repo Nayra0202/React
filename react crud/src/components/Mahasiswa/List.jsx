@@ -34,7 +34,9 @@ export default function List() {
                         <tr key={data.id}>
                             <td>{data.nama}</td>
                             <td>{data.npm}</td>
-                            <td>{data.npm}</td>
+                            <td>{data.email}</td>
+                            <td>{data.hp}</td>
+                            <td>{data.alamat}</td>
 
                         </tr>
                     ) )}
