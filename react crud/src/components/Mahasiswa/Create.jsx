@@ -5,13 +5,13 @@ import axios from "axios"; // Import axios untuk melakukan HTTP request
 
 export default function CreateMahasiswa() {
   // Inisialisasi state untuk menyimpan data mahasiswa
-  const [npm, setNpm] = useState("");
   const [namaMahasiswa, setNamaMahasiswa] = useState("");
-  const [tanggalLahir, setTanggalLahir] = useState("");
-  const [tempatLahir, setTempatLahir] = useState("");
+  const [npm, setNpm] = useState("");
   const [email, setEmail] = useState("");
   const [hp, setHp] = useState("");
   const [alamat, setAlamat] = useState("");
+  const [fakultasId, setFakultasId] = useState("");
+  const [fakultasList, setFakultasList] = useState([]);
   const [prodiId, setProdiId] = useState("");
   const [prodiList, setProdiList] = useState([]);
   // Inisialisasi state untuk menyimpan pesan error
@@ -42,22 +42,14 @@ export default function CreateMahasiswa() {
     setSuccess(""); // Reset pesan sukses sebelum proses
 
     // Validasi input: jika namamahasiswa atau fakultasId kosong, set pesan error
-    if (npm.trim() === "" || prodiId.trim() === "") {
-      setError("NPM are required");
-      return;
-    }
     if (namaMahasiswa.trim() === "") {
       setError("Nama mahasiswa are required"); // Set pesan error jika input kosong
       return; // Stop eksekusi fungsi jika input tidak valid
     }
-    if (tanggalLahir.trim() === "") {
-      setError("Tanggal Lahir are required"); // Set pesan error jika input kosong
-      return; // Stop eksekusi fungsi jika input tidak valid
-    }
-    if (tempatLahir.trim() === "") {
-      setError("Tempat Lahir are required"); // Set pesan error jika input kosong
-      return; // Stop eksekusi fungsi jika input tidak valid
-    }
+    if (npm.trim() === "" || prodiId.trim() === "") {
+        setError("NPM are required");
+        return;
+      }
     if (email.trim() === "") {
       setError("Email are required"); // Set pesan error jika input kosong
       return; // Stop eksekusi fungsi jika input tidak valid
@@ -76,29 +68,27 @@ export default function CreateMahasiswa() {
       const response = await axios.post(
         "https://academic-mi5a.vercel.app/api/api/mahasiswa", // Endpoint API yang dituju
         {
+          namaMahasiswa: namaMahasiswa, // Data yang dikirim berupa objek JSON dengan properti 'nama'
           npm: npm,
-          nama: namaMahasiswa, // Data nama mahasiswa
-          tanggal_lahir: tanggalLahir,
-          tempat_lahir: tempatLahir,
           email: email,
           hp: hp,
           alamat: alamat,
           prodi_id: prodiId,
+          fakultas_id: fakultasId
         }
       );
 
       // Jika response HTTP status 201 (Created), berarti berhasil
       if (response.status === 201) {
-        // Tampilkan pesan sukses jika mahasiswa berhasil dibuat
-        setSuccess("mahasiswa created successfully!");
-        setNpm("");
+        // Tampilkan pesan sukses jika fakultas berhasil dibuat
+        setSuccess("Mahasiswa created successfully!");
         setNamaMahasiswa(""); // Kosongkan input form setelah sukses submit
-        setTanggalLahir("");
-        setTempatLahir("");
+        setNpm("");
         setEmail("");
         setHp("");
         setAlamat("");
-        setProdiId(""); // Kosongkan dropdown setelah sukses submit
+        setFakultasId("");
+        setProdiId("");
       } else {
         // Jika tidak berhasil, tampilkan pesan error
         setError("Failed to create mahasiswa");
@@ -120,18 +110,6 @@ export default function CreateMahasiswa() {
       <form onSubmit={handleSubmit}>
         {/* Tangani event submit dengan handleSubmit */}
         <div className="mb-3">
-          <label className="form-label">NPM</label>
-          {/* Input untuk nama mahasiswa dengan class bootstrap */}
-          <input
-            type="text"
-            className="form-control"
-            id="npm"
-            value={npm} // Nilai input disimpan di state namamahasiswa
-            onChange={(e) => setNpm(e.target.value)} // Update state saat input berubah
-            placeholder="Enter NPM" // Placeholder teks untuk input
-          />
-        </div>
-        <div className="mb-3">
           <label className="form-label">Nama mahasiswa</label>
           {/* Input untuk nama mahasiswa dengan class bootstrap */}
           <input
@@ -144,27 +122,15 @@ export default function CreateMahasiswa() {
           />
         </div>
         <div className="mb-3">
-          <label className="form-label">Tanggal Lahir</label>
-          {/* Input untuk nama mahasiswa dengan class bootstrap */}
-          <input
-            type="date"
-            className="form-control"
-            id="tanggalLahir"
-            value={tanggalLahir} // Nilai input disimpan di state namamahasiswa
-            onChange={(e) => setTanggalLahir(e.target.value)} // Update state saat input berubah
-            placeholder="Enter Tanggal Lahir" // Placeholder teks untuk input
-          />
-        </div>
-        <div className="mb-3">
-          <label className="form-label">Tempat Lahir</label>
+          <label className="form-label">NPM</label>
           {/* Input untuk nama mahasiswa dengan class bootstrap */}
           <input
             type="text"
             className="form-control"
-            id="tempatLahir"
-            value={tempatLahir} // Nilai input disimpan di state namamahasiswa
-            onChange={(e) => setTempatLahir(e.target.value)} // Update state saat input berubah
-            placeholder="Enter Tempat Lahir" // Placeholder teks untuk input
+            id="npm"
+            value={npm} // Nilai input disimpan di state namamahasiswa
+            onChange={(e) => setNpm(e.target.value)} // Update state saat input berubah
+            placeholder="Enter NPM" // Placeholder teks untuk input
           />
         </div>
         <div className="mb-3">
@@ -206,6 +172,25 @@ export default function CreateMahasiswa() {
         </div>
 
         <div className="mb-3">
+          <label className="form-label">Fakultas</label>
+          {/* Dropdown untuk memilih fakultas */}
+          <select
+            className="form-select"
+            id="fakultasId"
+            value={fakultasId} // Nilai dropdown disimpan di state fakultasId
+            onChange={(e) => setFakultasId(e.target.value)} // Update state saat pilihan berubah
+          >
+            <option value="">Select Fakultas</option>
+            {fakultasList.map((fakultas) => (
+              <option key={fakultas.id} value={fakultas.id}>
+                {/* Set key dan value untuk masing-masing fakultas */}
+                {fakultas.nama} {/* Nama fakultas sebagai teks di dropdown */}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        <div className="mb-3">
           <label className="form-label">Program Studi</label>
           {/* Dropdown untuk memilih fakultas */}
           <select
@@ -223,6 +208,7 @@ export default function CreateMahasiswa() {
             ))}
           </select>
         </div>
+        
         {/* Tombol submit dengan class bootstrap */}
         <button type="submit" className="btn btn-primary">
           Create
