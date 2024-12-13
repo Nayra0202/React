@@ -7,9 +7,9 @@ export default function CreateFakultas() {
   // Inisialisasi state untuk menyimpan nama fakultas
   const [namaFakultas, setNamaFakultas] = useState("");
   // Inisialisasi state untuk menyimpan pesan error
-  const [dekan, setDekan] = useState("");
+  const [error, setError] = useState("");
   // Inisialisasi state untuk menyimpan pesan sukses
-  const [singkatan, setSingkatan] = useState("");
+  const [success, setSuccess] = useState("");
 
   // Fungsi yang akan dijalankan saat form disubmit
   const handleSubmit = async (e) => {
@@ -23,24 +23,12 @@ export default function CreateFakultas() {
       return; // Stop eksekusi fungsi jika input tidak valid
     }
 
-    if (dekan.trim() === "") {
-        setError("Nama Dekan is required"); // Set pesan error jika input kosong
-        return; // Stop eksekusi fungsi jika input tidak valid
-    }
-
-    if (singkatan.trim() === "") {
-        setError("Nama Singkatan is required"); // Set pesan error jika input kosong
-        return; // Stop eksekusi fungsi jika input tidak valid
-    }
-
     try {
       // Melakukan HTTP POST request untuk menyimpan data fakultas
       const response = await axios.post(
         "https://academic-mi5a.vercel.app/api/api/fakultas", // Endpoint API yang dituju
         {
           nama: namaFakultas, // Data yang dikirim berupa objek JSON dengan properti 'nama'
-          dekan: dekan,
-          singkatan: singkatan
         }
       );
 
@@ -79,30 +67,6 @@ export default function CreateFakultas() {
             value={namaFakultas} // Nilai input disimpan di state namaFakultas
             onChange={(e) => setNamaFakultas(e.target.value)} // Update state saat input berubah
             placeholder="Enter Fakultas Name" // Placeholder teks untuk input
-          />
-        </div>
-        <div className="mb-3">
-          <label className="form-label">
-            Nama Dekan
-          </label>
-          {/* Input untuk nama dekan dengan class bootstrap */}
-          <input
-            type="text" className="form-control" id="dekan"
-            value={dekan} // Nilai input disimpan di state namaFakultas
-            onChange={(e) => setDekan(e.target.value)} // Update state saat input berubah
-            placeholder="Enter Dekan Name" // Placeholder teks untuk input
-          />
-        </div>
-        <div className="mb-3">
-          <label className="form-label">
-            Nama Fakultas
-          </label>
-          {/* Input untuk nama singkatan dengan class bootstrap */}
-          <input
-            type="text" className="form-control" id="singkatan"
-            value={singkatan} // Nilai input disimpan di state namaFakultas
-            onChange={(e) => setSingkatan(e.target.value)} // Update state saat input berubah
-            placeholder="Enter Singkatan Name" // Placeholder teks untuk input
           />
         </div>
         <button type="submit" className="btn btn-primary">
