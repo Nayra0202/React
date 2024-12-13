@@ -16,7 +16,7 @@ export default function CreateProdi() {
   const [error, setError] = useState("");
   // Inisialisasi state untuk menyimpan pesan sukses
   const [success, setSuccess] = useState("");
-
+  
   // Mengambil daftar fakultas dari API saat komponen dimuat
   useEffect(() => {
     const fetchFakultas = async () => {

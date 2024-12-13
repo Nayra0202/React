@@ -21,6 +21,16 @@ export default function CreateMahasiswa() {
 
   // Mengambil daftar fakultas dari API saat komponen dimuat
   useEffect(() => {
+    const fetchFakultas = async () => {
+        try {
+          const response = await axios.get(
+            "https://academic-mi5a.vercel.app/api/api/prodi"
+          );
+          setFakultasList(response.data.data); // Simpan data fakultas ke dalam state
+        } catch (error) {
+          setError("Failed to fetch prodi data");
+        }
+      };
     const fetchProdi = async () => {
       try {
         const response = await axios.get(
@@ -32,6 +42,7 @@ export default function CreateMahasiswa() {
       }
     };
 
+    fetchFakultas();
     fetchProdi(); // Panggil fungsi untuk mengambil data fakultas
   }, []); // Kosongkan array dependensi agar hanya dijalankan sekali saat komponen dimuat
 
@@ -73,8 +84,8 @@ export default function CreateMahasiswa() {
           email: email,
           hp: hp,
           alamat: alamat,
+          fakultas_id: fakultasId,
           prodi_id: prodiId,
-          fakultas_id: fakultasId
         }
       );
 
@@ -157,7 +168,6 @@ export default function CreateMahasiswa() {
             placeholder="Enter No HP" // Placeholder teks untuk input
           />
         </div>
-
         <div className="mb-3">
           <label className="form-label">Alamat</label>
           {/* Input untuk nama mahasiswa dengan class bootstrap */}
@@ -192,7 +202,7 @@ export default function CreateMahasiswa() {
 
         <div className="mb-3">
           <label className="form-label">Program Studi</label>
-          {/* Dropdown untuk memilih fakultas */}
+          {/* Dropdown untuk memilih prodi */}
           <select
             className="form-select"
             id="prodiId"

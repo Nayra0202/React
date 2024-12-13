@@ -1,46 +1,43 @@
-import React, {useEffect, useState} from "react"
-import axios from "axios"
+import React, { useEffect, useState } from "react";
+import axios from "axios";
 import { NavLink } from "react-router-dom";
-
 export default function List() {
-    //state prodi
-    const [prodi, setProdi] = useState([]);
+  const [prodi, setProdi] = useState([]);
+  useEffect(() => {
+    axios
+      .get("https://academic-mi5a.vercel.app/api/api/prodi")
+      .then((response) => {
+        console.log(response);
+        setProdi(response.data.data);
+      });
+  }, []);
 
-    //mengambil data prodi saat komponen dimount
-    useEffect( () => {
-        axios
-        .get("https://academic-mi5a.vercel.app/api/api/prodi")
-        .then((response) => {
-            setProdi(response.data.result); // Simpan data prodi ke dalam state
-          })
-          .catch((error) => {
-            console.error("Error fetching data:", error); // Menangani error
-          });
-      }, []);
-
-      return (
-        <>
-          <h2>List Prodi</h2>
-          <NavLink to="/prodi/create" className="btn btn-primary mb-3">
-            Create
-          </NavLink>
-          <table className="table">
-            <thead>
-              <tr>
-                <th>Nama Prodi</th>
-                <th>Nama Fakultas</th>
-                <th>#</th>
-              </tr>
-            </thead>
-            <tbody>
-              {prodi.map((p) => (
-                <tr key={p.id}>
-                  <td>{p.nama} </td> {/* Menampilkan nama prodi */}
-                  <td>{p.fakultas.nama} </td> {/* Menampilkan nama fakultas */}
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </>
-      );
-    }
+  return (
+    <>
+      <h2>List Program Studi</h2>
+      <NavLink to="/prodi/create" className="btn btn-primary mb-3">
+        Create
+      </NavLink>
+      <table className="table">
+        <thead>
+          <tr>
+            <th>Nama Prodi</th>
+            <th>Kaprodi</th>
+            <th>Singkatan</th>
+            <th>Fakultas</th>
+          </tr>
+        </thead>
+        <tbody>
+          {prodi.map((data) => (
+            <tr key={data.id}>
+              <td>{data.nama}</td>
+              <td>{data.kaprodi}</td>
+              <td>{data.singkatan}</td>
+              <td>{data.fakultas.nama}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </>
+  );
+}
