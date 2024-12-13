@@ -10,10 +10,10 @@ export default function CreateMahasiswa() {
   const [email, setEmail] = useState("");
   const [hp, setHp] = useState("");
   const [alamat, setAlamat] = useState("");
-  const [fakultasId, setFakultasId] = useState("");
-  const [fakultasList, setFakultasList] = useState([]);
   const [prodiId, setProdiId] = useState("");
   const [prodiList, setProdiList] = useState([]);
+  const [fakultasId, setFakultasId] = useState("");
+  const [fakultasList, setFakultasList] = useState([]);
   // Inisialisasi state untuk menyimpan pesan error
   const [error, setError] = useState("");
   // Inisialisasi state untuk menyimpan pesan sukses
@@ -21,16 +21,6 @@ export default function CreateMahasiswa() {
 
   // Mengambil daftar fakultas dari API saat komponen dimuat
   useEffect(() => {
-    const fetchFakultas = async () => {
-        try {
-          const response = await axios.get(
-            "https://academic-mi5a.vercel.app/api/api/prodi"
-          );
-          setFakultasList(response.data.data); // Simpan data fakultas ke dalam state
-        } catch (error) {
-          setError("Failed to fetch prodi data");
-        }
-      };
     const fetchProdi = async () => {
       try {
         const response = await axios.get(
@@ -42,8 +32,19 @@ export default function CreateMahasiswa() {
       }
     };
 
-    fetchFakultas();
+    const fetchFakultas = async () => {
+        try {
+          const response = await axios.get(
+            "https://academic-mi5a.vercel.app/api/api/prodi"
+          );
+          setFakultasList(response.data.data); // Simpan data fakultas ke dalam state
+        } catch (error) {
+          setError("Failed to fetch prodi data");
+        }
+      };
+
     fetchProdi(); // Panggil fungsi untuk mengambil data fakultas
+    fetchFakultas();
   }, []); // Kosongkan array dependensi agar hanya dijalankan sekali saat komponen dimuat
 
   // Fungsi yang akan dijalankan saat form disubmit
@@ -84,8 +85,8 @@ export default function CreateMahasiswa() {
           email: email,
           hp: hp,
           alamat: alamat,
-          fakultas_id: fakultasId,
           prodi_id: prodiId,
+          fakultas_id: fakultasId,
         }
       );
 
@@ -98,8 +99,8 @@ export default function CreateMahasiswa() {
         setEmail("");
         setHp("");
         setAlamat("");
-        setFakultasId("");
         setProdiId("");
+        setFakultasId(""); 
       } else {
         // Jika tidak berhasil, tampilkan pesan error
         setError("Failed to create mahasiswa");
@@ -182,25 +183,6 @@ export default function CreateMahasiswa() {
         </div>
 
         <div className="mb-3">
-          <label className="form-label">Fakultas</label>
-          {/* Dropdown untuk memilih fakultas */}
-          <select
-            className="form-select"
-            id="fakultasId"
-            value={fakultasId} // Nilai dropdown disimpan di state fakultasId
-            onChange={(e) => setFakultasId(e.target.value)} // Update state saat pilihan berubah
-          >
-            <option value="">Select Fakultas</option>
-            {fakultasList.map((fakultas) => (
-              <option key={fakultas.id} value={fakultas.id}>
-                {/* Set key dan value untuk masing-masing fakultas */}
-                {fakultas.nama} {/* Nama fakultas sebagai teks di dropdown */}
-              </option>
-            ))}
-          </select>
-        </div>
-
-        <div className="mb-3">
           <label className="form-label">Program Studi</label>
           {/* Dropdown untuk memilih prodi */}
           <select
@@ -214,6 +196,25 @@ export default function CreateMahasiswa() {
               <option key={prodi.id} value={prodi.id}>
                 {/* Set key dan value untuk masing-masing fakultas */}
                 {prodi.nama} {/* Nama fakultas sebagai teks di dropdown */}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        <div className="mb-3">
+          <label className="form-label">Fakultas</label>
+          {/* Dropdown untuk memilih fakultas */}
+          <select
+            className="form-select"
+            id="fakultasId"
+            value={fakultasId} // Nilai dropdown disimpan di state fakultasId
+            onChange={(e) => setFakultasId(e.target.value)} // Update state saat pilihan berubah
+          >
+            <option value="">Select Fakultas</option>
+            {fakultasList.map((fakultas) => (
+              <option key={fakultas.id} value={fakultas.id}>
+                {/* Set key dan value untuk masing-masing fakultas */}
+                {fakultas.nama} {/* Nama fakultas sebagai teks di dropdown */}
               </option>
             ))}
           </select>

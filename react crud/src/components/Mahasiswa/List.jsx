@@ -27,8 +27,8 @@ export default function List(){
                     <th>email</th>
                     <th>hp</th>
                     <th>alamat</th>
-                    <th>Fakultas</th>
                     <th>Prodi</th>
+                    <th>Fakultas</th>
                 </tr>
             </thead>
             <tbody>
@@ -39,8 +39,8 @@ export default function List(){
                     <td>{p.email}</td>
                     <td>{p.hp}</td>
                     <td>{p.alamat}</td>
-                    <td>{p.prodi.fakultas.nama}</td>
                     <td>{p.prodi.nama}</td>
+                    <td>{p.prodi.fakultas.nama}</td>
                 </tr>
                 ) )}
 
