@@ -11,7 +11,7 @@ export default function List() {
   // Mengambil data fakultas saat komponen dimount
   useEffect(() => {
     axios
-      .get("https://project-apiif-3-b.vercel.app/api/api/fakultas")
+      .get("https://academic-mi5a.vercel.app/api/api/fakultas")
       .then((response) => {
         setFakultas(response.data.result); // Simpan data fakultas ke dalam state
         setIsLoading(false); // Set isLoading menjadi false setelah data berhasil diambil
@@ -39,7 +39,7 @@ export default function List() {
           .delete(`https://academic-mi5a.vercel.app/api/api/fakultas/${id}`)
           .then((response) => {
             // Hapus fakultas dari state setelah sukses dihapus dari server
-            setFakultas(fakultas.filter((f) => f.id !== id));
+            setFakultas(fakultas.filter((data) => data.id !== id));
             // Tampilkan notifikasi sukses
             Swal.fire("Deleted!", "Your data has been deleted.", "success");
           })
@@ -70,25 +70,25 @@ export default function List() {
         </div>
       ) : (
         <ul className="list-group">
-          {fakultas.map((f) => (
+          {fakultas.map((data) => (
             <li
-              key={f.id}
+              key={data.id}
               className="list-group-item d-flex justify-content-between align-items-center"
             >
-              <span>{f.nama}</span> {/* Menampilkan nama fakultas */}
+              <span>{data.nama}</span> {/* Menampilkan nama fakultas */}
               <div
                 className="btn-group"
                 role="group"
                 aria-label="Action buttons"
               >
                 <NavLink
-                  to={`/fakultas/edit/${f.id}`}
+                  to={`/fakultas/edit/${data.id}`}
                   className="btn btn-warning"
                 >
                   Edit
                 </NavLink>
                 <button
-                  onClick={() => handleDelete(f.id, f.nama)}
+                  onClick={() => handleDelete(data.id, data.nama)}
                   className="btn btn-danger"
                 >
                   Delete
@@ -101,3 +101,4 @@ export default function List() {
     </>
   );
 }
+
