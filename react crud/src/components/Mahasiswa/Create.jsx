@@ -5,8 +5,10 @@ import axios from "axios"; // Import axios untuk melakukan HTTP request
 
 export default function CreateMahasiswa() {
   // Inisialisasi state untuk menyimpan data mahasiswa
-  const [namaMahasiswa, setNamaMahasiswa] = useState("");
   const [npm, setNpm] = useState("");
+  const [nama, setNama] = useState("");
+  const [tanggal_lahir, setTanggalLahir] = useState("");
+  const [tempat_lahir, setTempatLahir] = useState("");
   const [email, setEmail] = useState("");
   const [hp, setHp] = useState("");
   const [alamat, setAlamat] = useState("");
@@ -35,7 +37,7 @@ export default function CreateMahasiswa() {
     const fetchFakultas = async () => {
         try {
           const response = await axios.get(
-            "https://academic-mi5a.vercel.app/api/api/prodi"
+            "https://academic-mi5a.vercel.app/api/api/fakultas"
           );
           setFakultasList(response.data.data); // Simpan data fakultas ke dalam state
         } catch (error) {
@@ -54,14 +56,22 @@ export default function CreateMahasiswa() {
     setSuccess(""); // Reset pesan sukses sebelum proses
 
     // Validasi input: jika namamahasiswa atau fakultasId kosong, set pesan error
-    if (namaMahasiswa.trim() === "") {
+    if (npm.trim() === "" || prodiId.trim() === "") {
+      setError("NPM are required");
+      return;
+    }
+    if (nama.trim() === "") {
       setError("Nama mahasiswa are required"); // Set pesan error jika input kosong
       return; // Stop eksekusi fungsi jika input tidak valid
     }
-    if (npm.trim() === "" || prodiId.trim() === "") {
-        setError("NPM are required");
-        return;
-      }
+    if (tanggal_lahir.trim() === "") {
+      setError("Nama mahasiswa are required"); // Set pesan error jika input kosong
+      return; // Stop eksekusi fungsi jika input tidak valid
+    }
+    if (tempat_lahir.trim() === "") {
+      setError("Nama mahasiswa are required"); // Set pesan error jika input kosong
+      return; // Stop eksekusi fungsi jika input tidak valid
+    }
     if (email.trim() === "") {
       setError("Email are required"); // Set pesan error jika input kosong
       return; // Stop eksekusi fungsi jika input tidak valid
@@ -80,8 +90,10 @@ export default function CreateMahasiswa() {
       const response = await axios.post(
         "https://academic-mi5a.vercel.app/api/api/mahasiswa", // Endpoint API yang dituju
         {
-          namaMahasiswa: namaMahasiswa, // Data yang dikirim berupa objek JSON dengan properti 'nama'
           npm: npm,
+          nama: nama, // Data yang dikirim berupa objek JSON dengan properti 'nama'
+          tanggal_lahir: tanggal_lahir,
+          tempat_lahir: tempat_lahir,
           email: email,
           hp: hp,
           alamat: alamat,
@@ -94,8 +106,10 @@ export default function CreateMahasiswa() {
       if (response.status === 201) {
         // Tampilkan pesan sukses jika fakultas berhasil dibuat
         setSuccess("Mahasiswa created successfully!");
-        setNamaMahasiswa(""); // Kosongkan input form setelah sukses submit
         setNpm("");
+        setNama(""); // Kosongkan input form setelah sukses submit
+        setTanggalLahir("");
+        setTempatLahir("");
         setEmail("");
         setHp("");
         setAlamat("");
@@ -122,18 +136,6 @@ export default function CreateMahasiswa() {
       <form onSubmit={handleSubmit}>
         {/* Tangani event submit dengan handleSubmit */}
         <div className="mb-3">
-          <label className="form-label">Nama mahasiswa</label>
-          {/* Input untuk nama mahasiswa dengan class bootstrap */}
-          <input
-            type="text"
-            className="form-control"
-            id="namaMahasiswa"
-            value={namaMahasiswa} // Nilai input disimpan di state namamahasiswa
-            onChange={(e) => setNamaMahasiswa(e.target.value)} // Update state saat input berubah
-            placeholder="Enter Mahasiswa Name" // Placeholder teks untuk input
-          />
-        </div>
-        <div className="mb-3">
           <label className="form-label">NPM</label>
           {/* Input untuk nama mahasiswa dengan class bootstrap */}
           <input
@@ -143,6 +145,42 @@ export default function CreateMahasiswa() {
             value={npm} // Nilai input disimpan di state namamahasiswa
             onChange={(e) => setNpm(e.target.value)} // Update state saat input berubah
             placeholder="Enter NPM" // Placeholder teks untuk input
+          />
+        </div>
+        <div className="mb-3">
+          <label className="form-label">Nama mahasiswa</label>
+          {/* Input untuk nama mahasiswa dengan class bootstrap */}
+          <input
+            type="text"
+            className="form-control"
+            id="nama"
+            value={nama} // Nilai input disimpan di state namamahasiswa
+            onChange={(e) => setNama(e.target.value)} // Update state saat input berubah
+            placeholder="Enter Mahasiswa Name" // Placeholder teks untuk input
+          />
+        </div>
+        <div className="mb-3">
+          <label className="form-label">Tanggal Lahir</label>
+          {/* Input untuk nama mahasiswa dengan class bootstrap */}
+          <input
+            type="date"
+            className="form-control"
+            id="tanggal_lahir"
+            value={tanggal_lahir} // Nilai input disimpan di state namamahasiswa
+            onChange={(e) => setTanggalLahir(e.target.value)} // Update state saat input berubah
+            placeholder="Enter Tanggal Lahir" // Placeholder teks untuk input
+          />
+        </div>
+        <div className="mb-3">
+          <label className="form-label">Tempat Lahir</label>
+          {/* Input untuk nama mahasiswa dengan class bootstrap */}
+          <input
+            type="text"
+            className="form-control"
+            id="tempat_lahir"
+            value={tempat_lahir} // Nilai input disimpan di state namamahasiswa
+            onChange={(e) => setTempatLahir(e.target.value)} // Update state saat input berubah
+            placeholder="Enter Tempat Lahir" // Placeholder teks untuk input
           />
         </div>
         <div className="mb-3">
