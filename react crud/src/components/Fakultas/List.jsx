@@ -13,7 +13,7 @@ export default function List() {
     axios
       .get("https://academic-mi5a.vercel.app/api/api/fakultas")
       .then((response) => {
-        setFakultas(response.data.result); // Simpan data fakultas ke dalam state
+        setFakultas(response.data.data); // Simpan data fakultas ke dalam state
         setIsLoading(false); // Set isLoading menjadi false setelah data berhasil diambil
       })
       .catch((error) => {

@@ -28,7 +28,7 @@ export default function List() {
             .delete(`https://academic-mi5a.vercel.app/api/api/mahasiswa/${id}`)
             .then((response) => {
               // Hapus fakultas dari state setelah sukses dihapus dari server
-              setMahasiswa(mahasiswa.filter((f) => f.id !== id));
+              setMahasiswa(mahasiswa.filter((data) => data.id !== id));
               // Tampilkan notifikasi sukses
               Swal.fire("Deleted!", "Your data has been deleted.", "success");
             })
@@ -78,6 +78,12 @@ export default function List() {
                 <td>{data.prodi.nama}</td>
                 <td>{data.prodi.fakultas.nama}</td>
                 <td>
+                  <NavLink
+                  to={`/mahasiswa/edit/${data.id}`}
+                  className="btn btn-warning"
+                >
+                  Edit
+                </NavLink>
                   <button
                     onClick={()=> handleDelete(data.id,data.nama)}
                     className="btn btn-danger">Hapus

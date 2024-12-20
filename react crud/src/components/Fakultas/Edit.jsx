@@ -14,11 +14,11 @@ export default function Edit() {
   // Mengambil data fakultas berdasarkan id ketika komponen pertama kali dimuat
   useEffect(() => {
     axios
-      .get(`https://academic.mi5a./api/api/fakultas/${id}`)  // Mengirimkan request GET untuk mendapatkan data fakultas berdasarkan ID
+      .get(`https://academic-mi5a.vercel.app/api/api/fakultas/${id}`)  // Mengirimkan request GET untuk mendapatkan data fakultas berdasarkan ID
       .then((response) => {
         setNama(response.data.result.nama);  // Jika sukses, mengisi state 'nama' dengan nama fakultas dari response
-        setDekan(response.data.result.nama);
-        setSingkatan(response.data.result.nama);
+        setDekan(response.data.result.dekan);
+        setSingkatan(response.data.result.singkatan);
       })
       .catch((error) => {
         console.error("Error fetching data:", error);  // Menampilkan pesan error di console jika request gagal
@@ -43,7 +43,7 @@ export default function Edit() {
   const handleSubmit = (e) => {
     e.preventDefault();  // Mencegah reload halaman saat form disubmit
     axios
-      .patch(`https://academic-mi5a.vercel.app/api/api/fakultas/${id}`, { nama })  // Mengirimkan request PATCH untuk mengupdate data fakultas berdasarkan ID
+      .put(`https://academic-mi5a.vercel.app/api/api/fakultas/${id}`, { nama,dekan,singkatan })  // Mengirimkan request PATCH untuk mengupdate data fakultas berdasarkan ID
       .then((response) => {
         navigate("/fakultas");  // Jika update berhasil, navigasi kembali ke halaman list fakultas
       })
@@ -76,7 +76,7 @@ export default function Edit() {
             className="form-control"
             id="dekan"
             value={dekan}  // Mengisi nilai input dengan state 'nama'
-            onChange={handleChange}  // Mengubah nilai input saat ada perubahan (user mengetik)
+            onChange={handleChangeDekan}  // Mengubah nilai input saat ada perubahan (user mengetik)
             required  // Input wajib diisi
           />
         </div>
@@ -87,7 +87,7 @@ export default function Edit() {
             className="form-control"
             id="singkatan"
             value={singkatan}  // Mengisi nilai input dengan state 'nama'
-            onChange={handleChange}  // Mengubah nilai input saat ada perubahan (user mengetik)
+            onChange={handleChangeSingkatan}  // Mengubah nilai input saat ada perubahan (user mengetik)
             required  // Input wajib diisi
           />
         </div>

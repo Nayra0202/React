@@ -8,8 +8,10 @@ const FakultasCreate = React.lazy (() => import("./components/Fakultas/Create"))
 const FakultasEdit = React.lazy (() => import("./components/Fakultas/Edit"))
 const ProdiList = React.lazy (() => import("./components/Prodi/List"))
 const ProdiCreate = React.lazy(() => import("./components/Prodi/Create"));
+const ProdiEdit = React.lazy(() => import("./components/Prodi/Edit"));
 const MahasiswaList = React.lazy (() => import("./components/Mahasiswa/List"))
 const MahasiswaCreate = React.lazy (() => import("./components/Mahasiswa/Create"))
+const MahasiswaEdit = React.lazy (() => import("./components/Mahasiswa/Edit"))
 
 function App() {
 
@@ -46,8 +48,10 @@ function App() {
         <Route path="/fakultas/edit/:id" element={<FakultasEdit />} />
         <Route path="/prodi" element={<ProdiList />} />
         <Route path="/prodi/create" element={<ProdiCreate />} />
+        <Route path="/prodi/edit/:id" element={<ProdiEdit />} />
         <Route path="/mahasiswa" element={<MahasiswaList />} />
         <Route path="/mahasiswa/create" element={<MahasiswaCreate />} />
+        <Route path="/mahasiswa/edit/:id" element={<MahasiswaEdit />} />
       </Routes>
     </Router>
   )
